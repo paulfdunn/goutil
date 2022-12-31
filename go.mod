@@ -1,3 +1,3 @@
-module paulfdunn.com/goutil
+module github.com/paulfdunn/goutil
 
-go 1.16
+go 1.19
