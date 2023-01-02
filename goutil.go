@@ -195,7 +195,7 @@ func EnumsFromMapIntString(m map[int]string) (keys []int, values []string) {
 		keys[i] = k
 		i++
 	}
-	sort.Sort(sort.IntSlice(keys))
+	sort.Ints(keys)
 
 	for _, k := range keys {
 		values = append(values, m[k])
@@ -317,27 +317,29 @@ func MinMaxIntSlice(in []int, filter map[int]string) (int, int, error) {
 // PrettyJSON transforms JSON for more friendly screen output.
 // Transforms this:
 // "SomeJSONField": [1,
-//     2,
-//     3,
-//     4      ],
+//
+//	2,
+//	3,
+//	4      ],
+//
 // into:
 // "SomeJSONField": [1,2,3,4],
 func PrettyJSON(json []byte) []byte {
-	// re1: remove all CRLR from lines that only have a number followed by
+	// re1: remove all CRLF from lines that only have a number followed by
 	// comma. This gets rid of all CRLF, but leaves the initial CRLF
 	// after the opening "["
-	re1 := regexp.MustCompile("(?m:^\\s*?([0-9]+,?)\\s*?\r?\n?)")
+	re1 := regexp.MustCompile(`(?m:^\s*?([0-9.]+,?)\s*?\r?\n?)`)
 	json = re1.ReplaceAll(json, []byte("$1"))
-	// re:2 Now get rid of the opening CRLF if "[" it ia followed by
+	// re:2 Now get rid of the CRLF immediately after "[" if it is followed by a
 	//  number and comma.
-	re2 := regexp.MustCompile("(?m:\\[\\s*?\r?\n([0-9]+,))")
+	re2 := regexp.MustCompile(`(?m:\[\s*?\r?\n?([0-9.]+,)\r?\n?)`)
 	json = re2.ReplaceAll(json, []byte("[$1"))
 	// re3: remove the trailing spaces after the final number and prior to the final "]"
-	re3 := regexp.MustCompile("([0-9])\\s*?]")
+	re3 := regexp.MustCompile(`([0-9.])\s*?]`)
 	json = re3.ReplaceAll(json, []byte("$1]"))
 
 	// JSON converts actual \n to "\n"; undo that
-	re4 := regexp.MustCompile("\\\\n")
+	re4 := regexp.MustCompile(`\n`)
 	json = re4.ReplaceAll(json, []byte("\n"))
 
 	// Remove trailing whitespace from any line so that output is

@@ -21,11 +21,11 @@ var (
 )
 
 func ExampleByteSliceToString() {
-	fmt.Printf(ByteSliceToString([]byte{}, 3))
-	fmt.Printf(ByteSliceToString([]byte{0}, 3))
-	fmt.Printf(ByteSliceToString([]byte{0, 1, 2}, 3))
-	fmt.Printf(ByteSliceToString([]byte{0, 1, 2, 3}, 3))
-	fmt.Printf(ByteSliceToString([]byte{0, 1, 2, 3, 4, 5}, 3))
+	fmt.Print(ByteSliceToString([]byte{}, 3))
+	fmt.Print(ByteSliceToString([]byte{0}, 3))
+	fmt.Print(ByteSliceToString([]byte{0, 1, 2}, 3))
+	fmt.Print(ByteSliceToString([]byte{0, 1, 2, 3}, 3))
+	fmt.Print(ByteSliceToString([]byte{0, 1, 2, 3, 4, 5}, 3))
 
 	// Output:
 	// 00
@@ -177,20 +177,20 @@ func ExampleIntSliceIsASCII_allValuesFiltered() {
 func ExampleIntSliceRemoveDuplicates() {
 	r := IntSliceRemoveDuplicates([]int{1, 2, 3, 4, 4, 1, 7, 8})
 	// Result may not be stable, so sort prior to Output.
-	sort.Sort(sort.IntSlice(r))
+	sort.Ints(r)
 	fmt.Println(r)
 	// Output:
 	// [1 2 3 4 7 8]
 }
 
 func ExampleMD5ChecksumBase64() {
-	fmt.Print(fmt.Sprintf("%s", MD5ChecksumBase64([]byte("admin:Western Digital Corporation:admin"))))
+	fmt.Printf("%s", MD5ChecksumBase64([]byte("admin:Western Digital Corporation:admin")))
 	// Output:
 	// l+uthS0Nq/1rca4m//Yfow==
 }
 
 func ExampleMD5Checksum() {
-	fmt.Print(fmt.Sprintf("% 02x", MD5Checksum([]byte("admin:Western Digital Corporation:admin"))))
+	fmt.Printf("% 02x", MD5Checksum([]byte("admin:Western Digital Corporation:admin")))
 	// Output:
 	// 97 eb ad 85 2d 0d ab fd 6b 71 ae 26 ff f6 1f a3
 }
@@ -236,64 +236,77 @@ func ExampleMinMaxIntSlice_allValuesFiltered() {
 
 func ExamplePrettyJSON() {
 	testJSON := []byte(
-		`"field": [
-1,
+		`"field": [ 
+1.1,
 2,
 3    ],`)
 	pj := PrettyJSON(testJSON)
 	fmt.Println(string(pj))
+
+	testJSON = []byte(
+		`"field": [ 1.1,
+2,
+3    ],`)
+	pj = PrettyJSON(testJSON)
+	fmt.Println(string(pj))
+
+	testJSON = []byte(
+		`"field": [ 1.1,
+
+		2,
+3    ],`)
+	pj = PrettyJSON(testJSON)
+	fmt.Println(string(pj))
+
 	// Output:
-	// "field": [1,2,3],
+	// "field": [1.1,2,3],
+	// "field": [1.1,2,3],
+	// "field": [1.1,2,3],
 }
 
 func ExampleRound_pi0() {
-	var rounded float64
-	rounded = Round(math.Pi, 0)
+	rounded := Round(math.Pi, 0)
 	fmt.Printf("%.0f", rounded)
 	// Output:
 	// 3
 }
 
 func ExampleRound_pi1() {
-	var rounded float64
-	rounded = Round(math.Pi, 1)
+	rounded := Round(math.Pi, 1)
 	fmt.Printf("%.1f", rounded)
 	// Output:
 	// 3.1
 }
 
 func ExampleRound_pi5() {
-	var rounded float64
-	rounded = Round(math.Pi, 5)
+	rounded := Round(math.Pi, 5)
 	fmt.Printf("%.5f", rounded)
 	// Output:
 	// 3.14159
 }
 
 func ExampleRound_n2l() {
-	var rounded float64
-	rounded = Round(1.494, 2)
+	rounded := Round(1.494, 2)
 	fmt.Printf("%.2f", rounded)
 	// Output:
 	// 1.49
 }
 
 func ExampleRound_n2h() {
-	var rounded float64
-	rounded = Round(1.495, 2)
+	rounded := Round(1.495, 2)
 	fmt.Printf("%.2f", rounded)
 	// Output:
 	// 1.50
 }
 
 func ExampleSHA1ChecksumBase64() {
-	fmt.Print(fmt.Sprintf("%s", SHA1ChecksumBase64([]byte("admin"))))
+	fmt.Printf("%s", SHA1ChecksumBase64([]byte("admin")))
 	// Output:
 	// 0DPiKuNIrrVmD8IUCuw1hQxNqZc=
 }
 
 func ExampleSHA1Checksum() {
-	fmt.Print(fmt.Sprintf("% 02x", SHA1Checksum([]byte("admin"))))
+	fmt.Printf("% 02x", SHA1Checksum([]byte("admin")))
 	// Output:
 	// d0 33 e2 2a e3 48 ae b5 66 0f c2 14 0a ec 35 85 0c 4d a9 97
 }
